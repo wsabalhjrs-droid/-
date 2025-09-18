@@ -1,0 +1,20 @@
+<!-- Code generated for API Clients. DO NOT EDIT. -->
+
+#### Example Response
+
+```json
+{
+	"next_page_uri": null,
+	"ssh_certificate_authorities": [
+		{
+			"created_at": "2024-10-17T20:26:46Z",
+			"description": "Staging Environment Hosts",
+			"id": "sshca_2na2L2nsqDZHHCn26IckL8qo6b1",
+			"key_type": "ed25519",
+			"public_key": "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIB8Uh+Kratfi/uoR8F8Y5qENjrWFcmmN7dB/TLD24LFS",
+			"uri": "https://api.ngrok.com/ssh_certificate_authorities/sshca_2na2L2nsqDZHHCn26IckL8qo6b1"
+		}
+	],
+	"uri": "https://api.ngrok.com/ssh_certificate_authorities"
+}
+```
