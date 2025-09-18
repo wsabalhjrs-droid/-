@@ -1,0 +1,43 @@
+{
+  "include": [
+    "**/*.ts",
+    "**/*.tsx",
+    "**/*.mdx",
+    "**/.server/**/*.ts",
+    "**/.server/**/*.tsx",
+    "**/.client/**/*.ts",
+    "**/.client/**/*.tsx"
+  ],
+  "compilerOptions": {
+    "allowImportingTsExtensions": true,
+    "lib": ["DOM", "DOM.Iterable", "ES2022"],
+    "types": ["vite/client", "vitest/globals", "node"],
+    "isolatedModules": true,
+    "esModuleInterop": true,
+    "jsx": "react-jsx",
+    "module": "ESNext",
+    "moduleResolution": "Bundler",
+    "resolveJsonModule": true,
+    "target": "ES2022",
+    "strict": true,
+    "allowJs": true,
+    "skipLibCheck": true,
+    "forceConsistentCasingInFileNames": true,
+    "baseUrl": ".",
+    "paths": {
+      "@components/*": ["./pages/components/*"],
+      "@content/*": ["./content/*"],
+      "@shared/*": ["./content/shared/*"],
+      "@site/*": ["./content/*"],
+      "~/*": ["./pages/*"],
+      "@root/*": ["./*"],
+      "@docs/*": ["./pages/docs/*"],
+      "@utils/*": ["./pages/utils/*"],
+      "@pages/*": ["./pages/*"],
+      "@static/*": ["./static/*"],
+    },
+
+    // Vite takes care of building everything, not tsc.
+    "noEmit": true
+  }
+}
