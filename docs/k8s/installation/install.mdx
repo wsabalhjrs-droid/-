@@ -1,0 +1,73 @@
+---
+title: Install the ngrok Kubernetes Operator
+sidebar_label: Install
+pagination_next: k8s/guides/quickstart
+---
+
+import Installation from "./_installation.mdx";
+
+<Installation />
+
+## (optional) Find a Specific Version
+
+The following command will print out a list of all the available versions of the ngrok Kubernetes operator chart including development releases.
+
+If you want to update to a specific release of the operator instead of updating to the latest version, you add `--version <Chart Version>` to the
+following `helm install` command.
+
+This step is necessary if you plan on upgrading to a development version as helm will never install these versions for you unless you explicitly
+specify that you want to install a development version. Development versions are considered any version that does not follow the format `<major version>.<minor version>.<patch version>` such as `0.17.0-rc.1`.
+Many of the development versions of the ngrok Kubernetes operator follow that format with `rc` standing for Release Candidate. These are early development builds before an official release
+and may contain features that have not been fully implemented or bugs that have not been identified through testing.
+
+```bash
+helm search repo ngrok/ngrok-operator --versions --devel
+```
+
+## Next Steps
+
+The following will help you learn more about the ngrok Kubernetes operator and get started with it.
+
+### Use Endpoint bindings
+
+See [the docs on using Kubernetes Endpoint bindings](/docs/k8s/guides/bindings) to learn how to control how your Kubernetes Endpoints are accessed.
+
+### Quickstart
+
+Head to the [quickstart guide](/k8s/guides/quickstart) to get started with an example deployment.
+
+### Pricing
+
+The ngrok Kubernetes Operator is available to all ngrok users at no
+additional charge. You only incur costs if the resources provisioned by the
+controller incur a cost. More details can be found on our [pricing page](https://ngrok.com/pricing).
+
+### Helm Configuration Values
+
+This section provides some common use cases and recommendations when using this helm chart in a production setting. The Helm chart offers a variety of overrides that are useful for many different use cases in Kubernetes. Below is a list of common recipes that you may find helpful. If your use case is not achievable with the existing set of values, please log an issue detailing your use case and the values you would like to see added.
+
+See the full list of values in [the ngrok Operator repo](https://github.com/ngrok/ngrok-operator/blob/main/helm/ngrok-operator/values.yaml).
+
+### Deployment Scaling
+
+By default, the replica count is set to 1 via `replicaCount` . We recommend overriding this to 2 or more to ensure high availability during roll-outs and failures, and to spread out the load.
+
+### ngrok Region
+
+ngrok runs globally distributed tunnel servers around the world to enable fast, low latency traffic to your applications. See [ngrok's points of presence](/universal-gateway/points-of-presence/) for more information on ngrok's regions.
+
+Similar to the agent, if you do not explicitly pick a region via helm when installing the operator, the operator will attempt to pick the region with the least latency, which is usually the one geographically closest to your machine.
+
+See the [helm value `region`](https://github.com/ngrok/ngrok-operator/blob/main/helm/ngrok-operator/values.yaml#L47) to configure a specific region for the controller to use.
+
+### Metrics
+
+This operator exposes prometheus metrics on the `/metrics` endpoint. The metrics are exposed on the `:8080` port and can be scraped by prometheus or other services using typical means.
+
+This project is built using kube-builder, so out of the box it exposes the metrics listed [here](https://book.kubebuilder.io/reference/metrics-reference.html?highlight=metrics#default-exported-metrics-references)
+
+### Watching Specific Namespaces
+
+By default, the Operator watches all namespaces.
+It's a common use case to need a controller to watch only a specific namespace in the case where you may run a controller in a namespace for each team or environment.
+In order to watch only a specific namespace for ingress objects, you can set the helm value `watchNamespace` to the namespace you want to watch.
