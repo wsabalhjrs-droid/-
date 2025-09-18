@@ -1,0 +1,41 @@
+---
+title: Kubernetes Operator
+sidebar_label: Overview
+pagination_next: k8s/installation/install
+---
+
+The ngrok Kubernetes Operator is the best way to use ngrok if your applications run in Kubernetes environments. It comes with custom resources for configuration and also supports both Ingress resources as well as the new cross-platform Gateway API configuration resources. When using Kubernetes Ingresses or the Gateway API resources, the ngrok Kubernetes Operator will translate them into managed instances of the ngrok custom resources for you.
+
+The ngrok Kubernetes Operator is deployed to a cluster and allows developers to self-service endpoints to their apps and services using a shared ngrok account.
+
+## When Should I Use The ngrok Kubernetes Operator?
+
+You should use the ngrok Kubernetes Operator if you want to:
+
+1. Send traffic to your Kubernetes workloads
+1. Integrate Kubernetes workloads with workloads outside of Kubernetes, such as those running on virtual machines, bare metal, embedded devices, and anywhere else you can run ngrok
+1. Perform cross-cluster networking
+1. Use Kubernetes with ngrok without using ngrok's SDKs
+
+## What Type of Config Should I Use With The Operator?
+
+The Operator supports its own native custom resource types, including:
+
+- [Kubernetes Ingresses](/docs/k8s/guides/using-ingresses/)
+  - Easy to get started with for more simple use-cases
+- [Gateway API](/docs/k8s/guides/using-gwapi/)
+  - Offers more configuration options for traffic management and transformations
+- [ngrok's Managed resources](/docs/k8s/guides/managed-resources/)
+  - Offers complete control over your traffic, enabling many features such as OAuth/OIDC, rate limiting, and more
+
+:::tip
+You can use a different configuration type for each domain.
+:::
+
+## Pricing
+
+The ngrok Kubernetes Operator is available to all ngrok users on the free and pay-as-you-go plans. You only incur costs if the resources provisioned by the
+controller incur a cost. More details can be found on our [pricing page](https://ngrok.com/pricing).
+
+[Kubernetes Ingress docs]: https://kubernetes.io/docs/concepts/services-networking/ingress/
+[Gateway API docs]: https://gateway-api.sigs.k8s.io/
