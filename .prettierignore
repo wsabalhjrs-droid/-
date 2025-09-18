@@ -1,0 +1,25 @@
+# Ignore artifacts:
+build
+dist
+node_modules
+public
+static
+
+*.json
+*.yaml
+*.yml
+*.nix
+*.vue
+
+.direnv
+.docusaurus
+.git
+.github
+flake.lock
+pnpm-lock.yaml
+
+# Ignore the following files because prettier always breaks them
+docs/k8s/installation/*
+docs/k8s/guides/*
+docs/k8s/guides/how-to/*
+
