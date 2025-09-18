@@ -1,0 +1,93 @@
+---
+title: Forwarding Traffic to and Load Balancing Internal Endpoints with Cloud Endpoints
+description: How to use ngrok cloud endpoints to do round-robin load balancing.
+tags:
+  - guides
+  - cloud-endpoints
+  - private-endpoints
+  - load-balancing
+---
+
+import ConfigExample from "/src/components/ConfigExample.tsx";
+
+<!-- prettier-ignore -->
+<!-- Imports -->
+
+import TabItem from "@theme/TabItem";
+import Tabs from "@theme/Tabs";
+
+<!-- Guide -->
+
+This guide provides an example of using an ngrok Cloud Endpoint to route traffic to an internal endpoint.
+
+## Core Concepts
+
+- [Cloud endpoints](/network-edge/cloud-endpoints) are centrally managed endpoints in the cloud that can be used to route traffic to agent endpoints.
+- [Internal endpoints](/network-edge/internal-endpoints) are endpoints that are not publicly accessible and are only reachable from within your network by cloud endpoints via the forward action.
+- **Load balancing** improves application performance and reduces load by distributing incoming traffic across servers. This leads to faster response times for user-facing applications.
+
+## Prerequisites
+
+To follow this guide, you will need a computer with `ngrok` installed. [You can download ngrok here.](https://download.ngrok.com).
+
+## **Step 1** — Reserve a domain
+
+Visit https://dashboard.ngrok.com/domains and reserve a domain. This will be how your end users access your endpoint in the browser.
+
+## **Step 2** — Create a public cloud endpoint
+
+Once you've reserved a domain, visit https://dashboard.ngrok.com/endpoints to create a public endpoint linked to that domain
+
+## **Step 3** — Create a Traffic Policy for your cloud endpoint
+
+Cloud endpoints require a traffic policy so they know how to handle incoming traffic. This guide will showcase one of the simplest and most common use cases: forwarding traffic to a private endpoint via the `forward-internal` action.
+
+<ConfigExample
+	snippetText={null}
+	showLineNumbers={true}
+	config={{
+		on_http_request: [
+			{
+				actions: [
+					{
+						type: "forward-internal",
+						config: {
+							url: "https://the-internal-endpoint.internal",
+						},
+					},
+				],
+			},
+		],
+	}}
+/>
+
+## **Step 4** — Start an agent session
+
+At this point, you have a public endpoint with a domain and a traffic policy routing to the URL we defined in our traffic policy above, `https://the-internal-endpoint.internal`. But that URL doesn't exist on the public internet; we need to start an agent session so that requests to our public endpoint will be routed to our internal endpoint, served by the ngrok agent. So, locally, start an agent session with:
+
+`ngrok http 80 --url=https://the-internal-endpoint.internal`
+
+Make sure you have some sample application running on port 80.
+
+## **Step 5** — See your endpoint in action
+
+Visit the public endpoint you created in Step 1 and see that you're routed to whatever application your ngrok agent is serving.
+
+## **Step 5** — Load Balancing with Endpoint Pools
+
+:::warning
+
+Endpoint pools are currently in private beta. The functionality described below is not yet publicly available.
+
+:::
+
+Load balancing is simple with ngrok Endpoint Pools. Simply start another agent with the same internal endpoint URL,
+and the traffic will be automatically load balanced between the two agents in the pool!
+
+```bash
+ngrok http 80 --url=https://the-internal-endpoint.internal
+```
+
+## Conclusion
+
+And you're done! You've successfully created a cloud endpoint that can be accessed from the URL you reserved. The cloud endpoint will refer to its traffic policy and forward traffic to our internal endpoint. The internal endpoint finally exposes the local port on which it was created on in Step 1.
