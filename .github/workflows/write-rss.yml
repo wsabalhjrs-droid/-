@@ -1,19 +1,19 @@
-name: Sync RSS Feed to S3 Buckets
+name: مزامنة موجز RSS مع حاويات S3
 
 on:
   schedule:
-    - cron: '0 * * * *'  # Runs at the start of every hour
+    - cron: '0 * * * *' # يعمل في بداية كل ساعة
 
 jobs:
-  sync-rss-feed:
-    name: Sync RSS Feed
+  rss-feed:
+    name: مزامنة موجز RSS
     runs-on: ubuntu-latest
+
     steps:
-      - name: Checkout Repository
+      - name: Checkout repository
         uses: actions/checkout@v3
 
-      # This is partially duplicated from the deploy.yml workflow
-      - name: Fetch and Modify RSS Feed
+      - name: Fetch and modify RSS feeds
         run: |
           curl -s https://webflow.dev-ngrok.com/blog-post/rss.xml | sed 's/webflow.dev-ngrok.com/dev-ngrok.com/g' > dev-rss.xml
           curl -s https://webflow.stage-ngrok.com/blog-post/rss.xml | sed 's/webflow.stage-ngrok.com/stage-ngrok.com/g' > stage-rss.xml
@@ -26,11 +26,11 @@ jobs:
           aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
           aws-region: us-west-2
 
-      - name: Sync to Dev S3 Bucket
+      - name: Sync with Dev S3 bucket
         run: aws s3 cp dev-rss.xml s3://docs-s3.dev-ngrok.com/docs/blog-post/rss.xml --acl public-read
 
-      - name: Sync to Stage S3 Bucket
+      - name: Sync with Stage S3 bucket
         run: aws s3 cp stage-rss.xml s3://docs-s3.stage-ngrok.com/docs/blog-post/rss.xml --acl public-read
 
-      - name: Sync to Prod S3 Bucket
+      - name: Sync with Prod S3 bucket
         run: aws s3 cp rss.xml s3://docs-s3.ngrok.com/docs/blog-post/rss.xml --acl public-read
